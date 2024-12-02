@@ -23,7 +23,7 @@ struct AssignmentTrackerApp: App {
     
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            MainView()
         }
     }
 }
