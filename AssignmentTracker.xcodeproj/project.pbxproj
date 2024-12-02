@@ -10,10 +10,12 @@
 		2C6352C82CFD913C007C4DF8 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 2C6352C72CFD913C007C4DF8 /* FirebaseAnalytics */; };
 		2C6352CA2CFD913C007C4DF8 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 2C6352C92CFD913C007C4DF8 /* FirebaseAuth */; };
 		2C6352CC2CFD913C007C4DF8 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 2C6352CB2CFD913C007C4DF8 /* FirebaseFirestore */; };
+		2C6352D22CFD9AB8007C4DF8 /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = 2C6352D02CFD9AAE007C4DF8 /* .gitignore */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		2C6352A12CFD85AD007C4DF8 /* AssignmentTracker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AssignmentTracker.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		2C6352D02CFD9AAE007C4DF8 /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -43,6 +45,7 @@
 			children = (
 				2C6352A32CFD85AD007C4DF8 /* AssignmentTracker */,
 				2C6352A22CFD85AD007C4DF8 /* Products */,
+				2C6352D02CFD9AAE007C4DF8 /* .gitignore */,
 			);
 			sourceTree = "<group>";
 		};
@@ -124,6 +127,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2C6352D22CFD9AB8007C4DF8 /* .gitignore in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
