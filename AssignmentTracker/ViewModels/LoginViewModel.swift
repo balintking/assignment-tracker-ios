@@ -27,16 +27,21 @@ class LoginViewModel: ObservableObject {
         guard !email.trimmingCharacters(in: .whitespaces).isEmpty,
               !password.trimmingCharacters(in: .whitespaces).isEmpty else {
             
-            errorMessage = "Please fill in all fields."
+            errorMessage = "All fields must be filled."
             return false
         }
         
-        guard email.contains("@") && email.contains(".") else {
-            
-            errorMessage = "Please enter a valid email."
+        // Validate email
+        guard isValidEmail(email) else {
+            errorMessage = "Invalid email format."
             return false
         }
         
         return true
+    }
+    
+    private func isValidEmail(_ email: String) -> Bool {
+        let emailRegex = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}"
+        return NSPredicate(format: "SELF MATCHES %@", emailRegex).evaluate(with: email)
     }
 }
