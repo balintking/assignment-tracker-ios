@@ -17,7 +17,6 @@ struct AssignmentListItemView: View {
                 // Assignment Name
                 Text(assignment.name)
                     .font(.headline)
-                    .foregroundStyle(.black)
                 
                 // Course Name
                 Text(assignment.course ?? "")
