@@ -56,23 +56,34 @@ struct LoginView: View {
                 Text(errorMessage)
                     .foregroundStyle(.red)
                     .font(.subheadline)
-                    .padding(.top, 10)
+                    .padding(.top, 5)
             }
             
             // Login Button
             Button(action: {
                 viewModel.login()
             }) {
-                Text("Log In")
-                    .fontWeight(.bold)
-                    .foregroundStyle(.white)
-                    .frame(maxWidth: .infinity)
-                    .padding()
-                    .background(Color.purple)
-                    .cornerRadius(8)
-                    .padding(.horizontal, 20)
+                if viewModel.isLoading {
+                    ProgressView()
+                        .progressViewStyle(CircularProgressViewStyle(tint: .white))
+                        .frame(maxWidth: .infinity)
+                        .padding()
+                        .background(Color.purple)
+                        .cornerRadius(8)
+                        .padding(.horizontal, 20)
+                } else {
+                    Text("Log In")
+                        .fontWeight(.bold)
+                        .foregroundStyle(.white)
+                        .frame(maxWidth: .infinity)
+                        .padding()
+                        .background(Color.purple)
+                        .cornerRadius(8)
+                        .padding(.horizontal, 20)
+                }
             }
-            .padding(.top, 20)
+            .disabled(viewModel.isLoading)
+            .padding(.top, (viewModel.errorMessage == nil) ? 20 : 10)
             
             // Sign Up Navigation
             HStack {

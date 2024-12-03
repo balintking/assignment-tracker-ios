@@ -77,7 +77,7 @@ struct SignUpView: View {
                 Text(errorMessage)
                     .foregroundStyle(.red)
                     .font(.subheadline)
-                    .padding(.top, 10)
+                    .padding(.top, 5)
             }
             
             // Sign Up Button
@@ -106,7 +106,7 @@ struct SignUpView: View {
                 }
             }
             .disabled(viewModel.isLoading)
-            .padding(.top, 20)
+            .padding(.top, (viewModel.errorMessage == nil) ? 20 : 10)
             
             // Close Button
             Button(action: {

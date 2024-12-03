@@ -29,15 +29,19 @@ class SignUpViewModel: ObservableObject {
         isLoading = true
         Auth.auth().createUser(withEmail: email, password: password) { [weak self] result, error in
             guard let userId = result?.user.uid else {
-                self?.isLoading = false
-                self?.errorMessage = error?.localizedDescription
+                DispatchQueue.main.async {
+                    self?.isLoading = false
+                    self?.errorMessage = error?.localizedDescription
+                }
                 return
             }
             
             self?.insertUserRecord(id: userId)
             
-            self?.isLoading = false
-            self?.isSignUpSuccessful = true
+            DispatchQueue.main.async {
+                self?.isLoading = false
+                self?.isSignUpSuccessful = true
+            }
         }
     }
     

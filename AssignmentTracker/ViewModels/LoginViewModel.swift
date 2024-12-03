@@ -12,18 +12,31 @@ class LoginViewModel: ObservableObject {
     @Published var email: String = ""
     @Published var password: String = ""
     @Published var errorMessage: String? = nil
+    @Published var isLoading: Bool = false
+    
+
     
     func login() {
+        errorMessage = nil
+        
         guard validate() else {
             return
         }
         
-        Auth.auth().signIn(withEmail: email, password: password)
+        isLoading = true
+        Auth.auth().signIn(withEmail: email, password: password) { [weak self] result, error in
+            DispatchQueue.main.async {
+                self?.isLoading = false
+                if let error = error {
+                    self?.errorMessage = error.localizedDescription
+                } else {
+                    NotificationCenter.default.post(name: .authStateChanged, object: nil)
+                }
+            }
+        }
     }
     
     private func validate() -> Bool {
-        errorMessage = nil
-        
         guard !email.trimmingCharacters(in: .whitespaces).isEmpty,
               !password.trimmingCharacters(in: .whitespaces).isEmpty else {
             
@@ -38,10 +51,5 @@ class LoginViewModel: ObservableObject {
         }
         
         return true
-    }
-    
-    private func isValidEmail(_ email: String) -> Bool {
-        let emailRegex = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}"
-        return NSPredicate(format: "SELF MATCHES %@", emailRegex).evaluate(with: email)
     }
 }
