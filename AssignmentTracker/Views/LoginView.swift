@@ -8,8 +8,7 @@
 import SwiftUI
 
 struct LoginView: View {
-    @State var email = ""
-    @State var password = ""
+    @StateObject var viewModel = LoginViewModel()
     @State private var showPassword = false
     @State private var showSignUp = false
     
@@ -21,11 +20,11 @@ struct LoginView: View {
             Text("Assignment Tracker")
                 .font(.largeTitle)
                 .fontWeight(.bold)
-                .foregroundColor(.purple)
+                .foregroundStyle(.purple)
                 .padding(.bottom, 20)
             
             // Email Field
-            TextField("Email", text: $email)
+            TextField("Email", text: $viewModel.email)
                 .autocapitalization(.none)
                 .keyboardType(.emailAddress)
                 .padding()
@@ -36,15 +35,15 @@ struct LoginView: View {
             // Password Field
             HStack {
                 if showPassword {
-                    TextField("Password", text: $password)
+                    TextField("Password", text: $viewModel.password)
                 } else {
-                    SecureField("Password", text: $password)
+                    SecureField("Password", text: $viewModel.password)
                 }
                 Button(action: {
                     showPassword.toggle()
                 }) {
                     Image(systemName: showPassword ? "eye.slash" : "eye")
-                        .foregroundColor(.gray)
+                        .foregroundStyle(.gray)
                 }
             }
             .padding()
@@ -52,13 +51,21 @@ struct LoginView: View {
             .cornerRadius(8)
             .padding(.horizontal, 20)
             
+            // Error Message
+            if let errorMessage = viewModel.errorMessage {
+                Text(errorMessage)
+                    .foregroundStyle(.red)
+                    .font(.subheadline)
+                    .padding(.top, 10)
+            }
+            
             // Login Button
             Button(action: {
-                // Handle login action
+                viewModel.login()
             }) {
                 Text("Log In")
                     .fontWeight(.bold)
-                    .foregroundColor(.white)
+                    .foregroundStyle(.white)
                     .frame(maxWidth: .infinity)
                     .padding()
                     .background(Color.purple)
@@ -70,13 +77,13 @@ struct LoginView: View {
             // Sign Up Navigation
             HStack {
                 Text("New around here?")
-                    .foregroundColor(.gray)
+                    .foregroundStyle(.gray)
                 Button(action: {
                     showSignUp.toggle()
                 }) {
                     Text("Sign Up")
                         .fontWeight(.bold)
-                        .foregroundColor(.purple)
+                        .foregroundStyle(.purple)
                 }
             }
             .padding(.top, 20)
@@ -86,7 +93,7 @@ struct LoginView: View {
             // Footer
             Text("Made with ❤️ by Balint Kiraly")
                 .font(.footnote)
-                .foregroundColor(.gray)
+                .foregroundStyle(.gray)
                 .padding(.bottom, 0)
         }
         .navigationBarHidden(true)

@@ -23,7 +23,7 @@ struct SignUpView: View {
             Text("Create Account")
                 .font(.largeTitle)
                 .fontWeight(.bold)
-                .foregroundColor(.purple)
+                .foregroundStyle(.purple)
                 .padding(.bottom, 20)
             
             // Name Field
@@ -53,7 +53,7 @@ struct SignUpView: View {
                     showPassword.toggle()
                 }) {
                     Image(systemName: showPassword ? "eye.slash" : "eye")
-                        .foregroundColor(.gray)
+                        .foregroundStyle(.gray)
                 }
             }
             .padding()
@@ -74,7 +74,7 @@ struct SignUpView: View {
             }) {
                 Text("Sign Up")
                     .fontWeight(.bold)
-                    .foregroundColor(.white)
+                    .foregroundStyle(.white)
                     .frame(maxWidth: .infinity)
                     .padding()
                     .background(Color.purple)
@@ -89,7 +89,7 @@ struct SignUpView: View {
             }) {
                 Text("Cancel")
                     .fontWeight(.bold)
-                    .foregroundColor(.purple)
+                    .foregroundStyle(.purple)
                     .padding()
             }
             
