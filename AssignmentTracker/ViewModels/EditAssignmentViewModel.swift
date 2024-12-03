@@ -67,7 +67,7 @@ class EditAssignmentViewModel: ObservableObject {
             let newId = UUID().uuidString
             let newAssignment = Assignment(id: newId, name: name, dueDate: dueDate.timeIntervalSince1970, course: course, status: status)
             
-            db.collection("users").document(userId).collection("assignments").addDocument(data: newAssignment.asDictionary()) { error in
+            db.collection("users").document(userId).collection("assignments").document(newId).setData(newAssignment.asDictionary()) { error in
                 DispatchQueue.main.async {
                     self.isLoading = false
                     if let error = error {

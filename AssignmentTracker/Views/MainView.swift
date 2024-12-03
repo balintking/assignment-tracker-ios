@@ -26,7 +26,7 @@ struct MainView: View {
     @ViewBuilder
     var mainContent: some View {
         TabView {
-            AssignmentsView()
+            AssignmentsView(userId: viewModel.currentUserId)
                 .tabItem {
                     Label("Assignments", systemImage: "list.bullet")
                 }
