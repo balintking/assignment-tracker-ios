@@ -10,6 +10,7 @@ import FirebaseAuth
 
 class MainViewModel: ObservableObject {
     @Published var isUserSignedIn: Bool = false
+    @Published var currentUserId: String = ""
     
     init() {
         checkAuthState()
@@ -20,6 +21,7 @@ class MainViewModel: ObservableObject {
     
     func checkAuthState() {
         isUserSignedIn = Auth.auth().currentUser != nil
+        currentUserId = Auth.auth().currentUser?.uid ?? ""
     }
     
     @objc private func authStateChanged() {

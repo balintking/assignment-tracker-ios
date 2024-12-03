@@ -11,37 +11,38 @@ struct MainView: View {
     @StateObject private var viewModel = MainViewModel()
     
     var body: some View {
-        NavigationView {
-            Group {
-                if viewModel.isUserSignedIn {
-                    // Authenticated Content
-                    VStack {
-                        Text("Welcome to Assignment Tracker!")
-                            .font(.title)
-                            .padding()
-                        Text("You are signed in.")
-                            .font(.subheadline)
-                        Button(action: {
-                            viewModel.signOut()
-                        }) {
-                            Text("Sign Out")
-                                .fontWeight(.bold)
-                                .foregroundStyle(.white)
-                                .frame(maxWidth: .infinity)
-                                .padding()
-                                .background(Color.red)
-                                .cornerRadius(8)
-                                .padding(.horizontal, 20)
-                        }
-                    }
-                } else {
-                    LoginView()
-                }
-            }
-            .onAppear {
-                viewModel.checkAuthState()
+        Group {
+            if viewModel.isUserSignedIn {
+                mainContent
+            } else {
+                LoginView()
             }
         }
+        .onAppear {
+            viewModel.checkAuthState()
+        }
+    }
+    
+    @ViewBuilder
+    var mainContent: some View {
+        TabView {
+            AssignmentsView(userId: viewModel.currentUserId)
+                .tabItem {
+                    Label("Assignments", systemImage: "list.bullet")
+                }
+            /*
+            CoursesView()
+                .tabItem {
+                    Label("Courses", systemImage: "book.closed")
+                }
+            
+            ProfileView()
+                .tabItem {
+                    Label("Profile", systemImage: "person.circle")
+                }
+             */
+        }
+        .accentColor(.purple)
     }
 }
 
