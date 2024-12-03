@@ -35,12 +35,12 @@ struct MainView: View {
                 .tabItem {
                     Label("Courses", systemImage: "book.closed")
                 }
+             */
             
             ProfileView()
                 .tabItem {
                     Label("Profile", systemImage: "person.circle")
                 }
-             */
         }
         .accentColor(.purple)
     }
