@@ -10,9 +10,9 @@ import SwiftUI
 
 struct EditAssignmentView: View {
     @Environment(\.dismiss) private var dismiss
-    //@Binding var assignment: Assignment?
-
     @StateObject var viewModel = EditAssignmentViewModel()
+    
+    var assignment: Assignment?
 
     var body: some View {
         NavigationView {
@@ -25,11 +25,29 @@ struct EditAssignmentView: View {
                         Text($0.rawValue)
                     }
                 }
+                
+                // Error Message
+                if let errorMessage = viewModel.errorMessage {
+                    Text(errorMessage)
+                        .foregroundStyle(.red)
+                        .font(.subheadline)
+                        .padding(.top, 5)
+                }
             }
-            .navigationTitle(/*assignment == nil ? "Add Assignment" : */"Edit Assignment")
+            .navigationTitle(assignment == nil ? "Add Assignment" : "Edit Assignment")
+            .onAppear {
+                if let assignment = assignment {
+                    viewModel.load(assignment: assignment)
+                }
+            }
             .toolbar {
                 ToolbarItem(placement: .confirmationAction) {
                     Button("Save") {
+                        viewModel.saveAssignment(assignmentId: assignment?.id) { success in
+                            if success {
+                                dismiss()
+                            }
+                        }
                     }
                 }
                 ToolbarItem(placement: .cancellationAction) {

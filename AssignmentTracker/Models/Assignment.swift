@@ -8,12 +8,12 @@
 import Foundation
 import SwiftUICore
 
-struct Assignment: Codable {
+struct Assignment: Codable, Identifiable {
     let id: String
-    let name: String
-    let dueDate: Date
-    let course: String
-    let status: AssignmentStatus
+    var name: String
+    var dueDate: TimeInterval
+    var course: String?
+    var status: AssignmentStatus
 }
 
 enum AssignmentStatus: String, Codable, CaseIterable {

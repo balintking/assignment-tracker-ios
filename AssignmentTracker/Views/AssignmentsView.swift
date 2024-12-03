@@ -10,8 +10,6 @@ import SwiftUI
 struct AssignmentsView: View {
     @StateObject var viewModel = AssignmentsViewModel()
     @State private var showAddAssignment = false
-
-    let userId: String
     
     var body: some View {
         NavigationView {
@@ -53,5 +51,5 @@ struct AssignmentsView: View {
 }
 
 #Preview {
-    AssignmentsView(userId: "")
+    AssignmentsView()
 }
