@@ -15,11 +15,11 @@ struct AssignmentsView: View {
         NavigationView {
             ZStack {
                 if viewModel.isLoading {
-                    ProgressView("Loading Assignments...") // Display a loading indicator
+                    ProgressView("Loading Assignments...")
                         .progressViewStyle(CircularProgressViewStyle())
                         .foregroundColor(.gray)
                 } else if viewModel.assignments.isEmpty {
-                    Text("No Assignments Found")
+                    Text("You're all set")
                         .font(.title3)
                         .foregroundColor(.gray)
                         .multilineTextAlignment(.center)
@@ -54,10 +54,15 @@ struct AssignmentsView: View {
         ForEach(viewModel.groupedAssignments.keys.sorted(), id: \.self) { key in
             Section(header: SectionHeaderView(title: viewModel.sectionHeader(for: key))) {
                 ForEach(viewModel.groupedAssignments[key]!, id: \.id) { assignment in
-                    NavigationLink(destination: EditAssignmentView(assignment: assignment)) {
-                        AssignmentListItemView(assignment: assignment)
-                            .padding(.horizontal)
-                    }
+                    AssignmentRow(assignment: assignment)
+                        .contextMenu {
+                            Button(action: {
+                                viewModel.deleteAssignment(id: assignment.id)
+                            }) {
+                                Label("Delete", systemImage: "trash")
+                                    .foregroundStyle(.red)
+                            }
+                        }
                 }
             }
         }
@@ -73,6 +78,17 @@ struct SectionHeaderView: View {
             .padding()
             .frame(maxWidth: .infinity, alignment: .leading)
             .background(Color(UIColor.systemGroupedBackground))
+    }
+}
+
+struct AssignmentRow: View {
+    let assignment : Assignment
+    
+    var body: some View {
+        NavigationLink(destination: EditAssignmentView(assignment: assignment)) {
+            AssignmentListItemView(assignment: assignment)
+                .padding(.horizontal)
+        }
     }
 }
 

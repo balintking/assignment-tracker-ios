@@ -14,6 +14,9 @@ class AssignmentsViewModel: ObservableObject {
     @Published var assignments: [Assignment] = []
     @Published var isLoading: Bool = false
     
+    
+    private let db = Firestore.firestore()
+    
     func loadAssignments() {
         isLoading = true
         guard let userId = Auth.auth().currentUser?.uid else {
@@ -21,7 +24,6 @@ class AssignmentsViewModel: ObservableObject {
             return
         }
         
-        let db = Firestore.firestore()
         db.collection("users/\(userId)/assignments").getDocuments { [weak self] snapshot, error in
             if let error = error {
                 self?.isLoading = false
@@ -53,6 +55,21 @@ class AssignmentsViewModel: ObservableObject {
             let formatter = DateFormatter()
             formatter.dateStyle = .medium
             return formatter.string(from: date)
+        }
+    }
+    
+    func deleteAssignment(id: String) {
+        guard let userId = Auth.auth().currentUser?.uid else {
+            return
+        }
+        
+        db.collection("users/\(userId)/assignments").document(id).delete() { error in
+            if let error = error {
+                print("Error deleting assignment: \(error)")
+            } else {
+                // Remove the assignment from the local assignments array
+                self.assignments.removeAll { $0.id == id }
+            }
         }
     }
 }
