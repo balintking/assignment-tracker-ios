@@ -11,9 +11,16 @@ import SwiftUI
 struct EditAssignmentView: View {
     @Environment(\.dismiss) private var dismiss
     @StateObject var viewModel = EditAssignmentViewModel()
+    @State var shakeDetector: ShakeDetector? = nil
+    
+    private var feedbackGenerator: UIImpactFeedbackGenerator = UIImpactFeedbackGenerator(style: .heavy)
     
     var assignment: Assignment?
-
+    
+    init(assignment: Assignment? = nil) {
+        self.assignment = assignment
+    }
+    
     var body: some View {
         NavigationView {
             Form {
@@ -39,6 +46,14 @@ struct EditAssignmentView: View {
                 if let assignment = assignment {
                     viewModel.load(assignment: assignment)
                 }
+                shakeDetector = ShakeDetector(onShake: {
+                    self.triggerVibration()
+                    viewModel.cancelChanges()
+                })
+                shakeDetector?.startShakeDetection()
+            }
+            .onDisappear {
+                shakeDetector?.stopShakeDetection()
             }
             .toolbar {
                 ToolbarItem(placement: .confirmationAction) {
@@ -57,9 +72,11 @@ struct EditAssignmentView: View {
                 }
             }
         }
-        .onAppear {
-            
-        }
+    }
+    
+    private func triggerVibration() {
+        feedbackGenerator.prepare()
+        feedbackGenerator.impactOccurred()
     }
 }
 

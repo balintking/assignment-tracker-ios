@@ -8,6 +8,7 @@
 import Foundation
 import FirebaseAuth
 import FirebaseFirestore
+import SwiftUICore
 
 class EditAssignmentViewModel: ObservableObject {
     @Published var name: String = ""
@@ -18,6 +19,8 @@ class EditAssignmentViewModel: ObservableObject {
     @Published var isLoading: Bool = false
     @Published var errorMessage: String? = nil
     
+    private var originalAssignment: Assignment? = nil
+    
     private let db = Firestore.firestore()
     
     var validInput: Bool {
@@ -25,10 +28,25 @@ class EditAssignmentViewModel: ObservableObject {
     }
     
     func load(assignment: Assignment) {
+        self.originalAssignment = assignment
         self.name = assignment.name
         self.course = assignment.course ?? ""
         self.status = assignment.status
         self.dueDate = Date(timeIntervalSince1970: assignment.dueDate)
+    }
+    
+    func cancelChanges() {
+        if originalAssignment != nil {
+            self.name = originalAssignment!.name
+            self.dueDate = Date(timeIntervalSince1970: originalAssignment!.dueDate)
+            self.course = originalAssignment!.course ?? ""
+            self.status = originalAssignment!.status
+        } else {
+            self.name = ""
+            self.dueDate = Date()
+            self.course = ""
+            self.status = .notStarted
+        }
     }
     
     func saveAssignment(assignmentId: String? = nil, completion: @escaping (Bool) -> Void) {
