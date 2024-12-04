@@ -76,6 +76,7 @@ struct ProfileView: View {
                 viewModel.loadUserData()
             }
         }
+        .navigationViewStyle(StackNavigationViewStyle())
     }
 }
 

@@ -8,8 +8,10 @@
 import SwiftUI
 
 struct AssignmentsView: View {
+    @Environment(\.horizontalSizeClass) var horizontalSizeClass
     @StateObject var viewModel = AssignmentsViewModel()
-    @State private var showAddAssignment = false
+    @State private var showEditAssignment = false
+    @State private var selectedAssignment: Assignment?
     
     var body: some View {
         NavigationView {
@@ -32,37 +34,47 @@ struct AssignmentsView: View {
                     }
                 }
             }
+            .frame(maxWidth: horizontalSizeClass == .compact ? .infinity:  700)
+            .padding(.top, horizontalSizeClass == .compact ? 0 : 40)
             .navigationTitle("Assignments")
             .toolbar {
                 Button(action: {
-                    showAddAssignment = true
+                    selectedAssignment = nil
+                    showEditAssignment = true
                 }) {
                     Image(systemName: "plus")
                 }
             }
             .onAppear(perform: viewModel.loadAssignments)
-            .sheet(isPresented: $showAddAssignment) {
-                EditAssignmentView()
-            }
             .refreshable {
                 viewModel.loadAssignments()
             }
+            .sheet(isPresented: $showEditAssignment) {
+                EditAssignmentView(assignment: selectedAssignment)
+            }
         }
+        .navigationViewStyle(StackNavigationViewStyle())
     }
     
     var assignmentsList: some View {
         ForEach(viewModel.groupedAssignments.keys.sorted(), id: \.self) { key in
             Section(header: SectionHeaderView(title: viewModel.sectionHeader(for: key))) {
                 ForEach(viewModel.groupedAssignments[key]!, id: \.id) { assignment in
-                    AssignmentRow(assignment: assignment)
-                        .contextMenu {
-                            Button(action: {
-                                viewModel.deleteAssignment(id: assignment.id)
-                            }) {
-                                Label("Delete", systemImage: "trash")
-                                    .foregroundStyle(.red)
-                            }
+                    Button(action: {
+                        selectedAssignment = assignment
+                        showEditAssignment = true
+                    }) {
+                        AssignmentListItemView(assignment: assignment)
+                            .padding(.horizontal)
+                    }
+                    .contextMenu {
+                        Button(action: {
+                            viewModel.deleteAssignment(id: assignment.id)
+                        }) {
+                            Label("Delete", systemImage: "trash")
+                                .foregroundStyle(.red)
                         }
+                    }
                 }
             }
         }
@@ -71,7 +83,7 @@ struct AssignmentsView: View {
 
 struct SectionHeaderView: View {
     let title: String
-
+    
     var body: some View {
         Text(title)
             .font(.headline)

@@ -9,6 +9,7 @@
 import SwiftUI
 
 struct EditAssignmentView: View {
+    @Environment(\.horizontalSizeClass) var horizontalSizeClass
     @Environment(\.dismiss) private var dismiss
     @StateObject var viewModel = EditAssignmentViewModel()
     @State var shakeDetector: ShakeDetector? = nil
