@@ -14,12 +14,15 @@ struct EditAssignmentView: View {
     @StateObject var viewModel = EditAssignmentViewModel()
     @State var shakeDetector: ShakeDetector? = nil
     
+    var onDissapear: () -> Void
+    
     private var feedbackGenerator: UIImpactFeedbackGenerator = UIImpactFeedbackGenerator(style: .heavy)
     
     var assignment: Assignment?
     
-    init(assignment: Assignment? = nil) {
+    init(assignment: Assignment? = nil, onDissapear: @escaping () -> Void) {
         self.assignment = assignment
+        self.onDissapear = onDissapear
     }
     
     var body: some View {
@@ -55,6 +58,7 @@ struct EditAssignmentView: View {
             }
             .onDisappear {
                 shakeDetector?.stopShakeDetection()
+                onDissapear()
             }
             .toolbar {
                 ToolbarItem(placement: .confirmationAction) {
@@ -82,5 +86,5 @@ struct EditAssignmentView: View {
 }
 
 #Preview {
-    EditAssignmentView()
+    EditAssignmentView(assignment: nil, onDissapear: {})
 }

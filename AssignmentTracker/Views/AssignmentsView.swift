@@ -50,7 +50,7 @@ struct AssignmentsView: View {
                 viewModel.loadAssignments()
             }
             .sheet(isPresented: $showEditAssignment) {
-                EditAssignmentView(assignment: selectedAssignment)
+                EditAssignmentView(assignment: selectedAssignment, onDissapear: viewModel.loadAssignments)
             }
         }
         .navigationViewStyle(StackNavigationViewStyle())
@@ -95,9 +95,10 @@ struct SectionHeaderView: View {
 
 struct AssignmentRow: View {
     let assignment : Assignment
+    let onDissapear: () -> Void
     
     var body: some View {
-        NavigationLink(destination: EditAssignmentView(assignment: assignment)) {
+        NavigationLink(destination: EditAssignmentView(assignment: assignment, onDissapear: onDissapear)) {
             AssignmentListItemView(assignment: assignment)
                 .padding(.horizontal)
         }
